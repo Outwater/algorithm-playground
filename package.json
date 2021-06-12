@@ -1,0 +1,23 @@
+{
+  "name": "baekjoon",
+  "version": "1.0.0",
+  "description": "백준문제 풀이를 기록합니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Outwater/baekjoon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Outwater/baekjoon/issues"
+  },
+  "homepage": "https://github.com/Outwater/baekjoon#readme",
+  "dependencies": {
+    "jest": "^27.0.4",
+    "nodemon": "^2.0.7"
+  }
+}
