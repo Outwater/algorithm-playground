@@ -1,4 +1,39 @@
-function solution (jobs) {
+function solution(jobs) {
+  // 2차풀이
+  // 현재시점에서 가능한 작업들을 우선순위 큐에 넣고.
+  // 현재시점에서 가능한 작업들 중 가장 빠른 소요시간의 작업이 먼저 수행되어야 한다.
+
+  //0) 변수세팅
+  let answer = 0;
+  // 0-1) 요청시점이 빠른 순으로 정렬
+  jobs.sort((a, b) => a[0] - b[0]);
+  // 0-2) 우선순위 큐 선언
+  // 현재시점에서 작업가능한 작업들이 들어가게 된다.
+  const pQ = [];
+  let time = 0;
+  let i = 0; //(i를 통해 jobs 순서를 정함, 이렇게 안하면 jobs.shift)
+  //1) jobs가 비고 우선순위큐가 빌 때 까지 반복
+  while (jobs.length > i || pQ.length > 0) {
+    // 1-1) 우선순위 큐에 넣기
+    if (jobs.length > i && jobs[i][0] <= time) {
+      pQ.push(jobs[i]); // 우선순위넣고 i++
+      i++;
+      pQ.sort((a, b) => a[1] - b[1]);
+      continue; // i가 jobs.length 보다 커져 현재시점 작업들이 pQ에 들어갈 때까지
+    }
+    // 1-2) 우선순위큐에 작업이 들어오지 않았을 때 (현재시점가능작업 없을 때)
+    if (pQ.length === 0) {
+      time = jobs[i][0]; // 첫작업시간 만큼 시간 흐르게함
+    } else {
+      // 1-3) 우선순위 큐에 작업이 있다면, 해당 작업 실행
+      const [start, work] = pQ.shift();
+      answer += time + (work - start);
+      time += work;
+    }
+  }
+  return Math.floor(answer / jobs.length);
+
+  // 1차풀이
   // 현재 문제
   // 구하는 로직은 맞다고 판단,
   // But 우선순위 큐에서 빠져나갈 값은 구했는데, 큐에서 해당하는 요소를 빼는 방법을 못찾음
@@ -16,7 +51,7 @@ function solution (jobs) {
   // 이 때 소요시간은 (끝나는 시간 - 해당작업 요청시점) 3-0 , 9-2 , 18-1
 
   // 3) solveMinQ 는 가능한 배열에서 우선순위가 가장 높은(작업소요시간이 적은) 값을 구하는 함수
-  function solveMinQ (arr) {
+  function solveMinQ(arr) {
     let min = arr[0];
     for (let i = 0; i < arr.length; i++) {
       if (arr[i][1] < min[1]) {
@@ -49,5 +84,5 @@ function solution (jobs) {
 solution([
   [0, 3],
   [1, 9],
-  [2, 6]
+  [2, 6],
 ]);
