@@ -1,5 +1,55 @@
-function solution (n, times) {
-  // 현재상황
+function solution(n, times) {
+  //2차 풀이
+  // 접근
+  // n이 10억으로 완전탬색은 불가하며, return 값의 최소값과 최대값이 명확하므로 이분탐색 진행
+
+  // 0) 변수선언
+  // 시간의 최소값 (left = times의 최소값)
+  // 시간의 최대값 (right = times의 최소값 * n) (1명이 전부 검사하는 경우)
+
+  // 1) 이분탐색 탬플릿
+  /*
+  while(left <= right){
+    let mid = (left + right) / 2
+    check( mid )
+    if( check(mid) > n){
+      right = mid -1
+    } else {
+      left = mid + 1
+    }
+  }
+  */
+
+  // 2) check함수
+  // 각 times 배열을 순회하며 현재시간을 time으로 나눈 몫을 모두 더한 값
+
+  // 3-1) check함수 >= n 면 검사를 많이 하는 것이므로 right 값을 줄여야한다.
+  // 3-2 check함수 < n 면 시간이 부족한 것이므로 left 값을 키워야 한다.
+  let left = Math.min(...times);
+  let right = n * Math.min(...times);
+  let result = 0;
+
+  function checkPerson(checkTime) {
+    let checkCnt = times.reduce((acc, time) => {
+      return acc + Math.floor(checkTime / time);
+    }, 0);
+    return checkCnt;
+  }
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (checkPerson(mid) >= n) {
+      result = mid;
+      right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+  }
+
+  return result;
+
+  /////////////////////////////  /////////////////////////////  /////////////////////////////
+
+  // 1차 풀이
   // return 값이 정답에 근접하나, 세세한 조절의 차이가 있다..
   // 테케 절반정도만 통과함
 
