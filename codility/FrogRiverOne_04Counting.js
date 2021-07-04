@@ -1,6 +1,18 @@
-// [문제링크](https://app.codility.com/c/run/trainingSQB338-EF3/)
+// [문제링크](https://app.codility.com/programmers/lessons/4-counting_elements/)
 
 // 2차풀이 (set 레퍼참고)
+// 중복을 포함하지 않는 set 객체
+// set에 해당 값 넣고, 해당 값의 길이가 X일 때
+function solution(X, A) {
+  let memo = new Set();
+
+  for (let i = 0; i < A.length; i++) {
+    memo.add(A[i]);
+
+    if (memo.size === X) return i;
+  }
+  return -1;
+}
 
 // 1차풀이
 // 시간복잡도 O(N^2)으로 실패
