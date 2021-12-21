@@ -1,4 +1,6 @@
 //* 2. 탑승 가능한 가장 마지막 시간 구하기
+//* 문제
+// 카카오 셔틀버스 문제
 //* 아이디어
 // 원소개수 오름차순으로 정렬하고, 추가되는 원소가 튜플의 다음 원소가 된다.
 
@@ -17,7 +19,48 @@
 //  2) 막차의 자리가 모잘라서, 마지막 사람보다 1분 빨리 타는 경우
 //
 //
+//* 2트(코드정리)
+//* 코드정리
+// timeToMin, minToTime 보조계산 함수
+function solution2(n, t, m, timetable) {
+  function timeToMin(time) {
+    let hour = Number(time.slice(0, 2) * 60);
+    let min = Number(time.slice(3));
+    return hour + min;
+  }
 
+  function minToTime(minTime) {
+    let hour =
+      parseInt(minTime / 60) < 10
+        ? "0" + parseInt(minTime / 60)
+        : `${parseInt(minTime / 60)}`;
+    let min = minTime % 60 < 10 ? "0" + (minTime % 60) : `${minTime % 60}`;
+    return `${hour}:${min}`;
+  }
+
+  let timetableMin = timetable
+    .map((time) => timeToMin(time))
+    .sort((a, b) => a - b);
+
+  let start = 9 * 60;
+  let time = start;
+
+  for (let i = 1; i <= n; i++) {
+    let goPeople = timetableMin.filter((el) => el <= time);
+
+    if (i === n) {
+      if (goPeople.length >= m) {
+        time = goPeople[m - 1] - 1;
+      }
+    } else {
+      let go = goPeople.length > m ? m : goPeople.length;
+      timetableMin.splice(0, go);
+      time += t;
+    }
+  }
+
+  return minToTime(time);
+}
 //*1트
 function solution1(n, t, m, timetable) {
   let timetableMin = timetable.map((time) => {
@@ -52,3 +95,5 @@ function solution1(n, t, m, timetable) {
 
 console.log(solution1(1, 1, 5, ["08:00", "08:01", "08:02", "08:03"])); // "09:00"
 console.log(solution1(1, 1, 1, ["23:59"], "09:00")); // 09:00
+console.log(solution2(1, 1, 5, ["08:00", "08:01", "08:02", "08:03"])); // "09:00"
+console.log(solution2(1, 1, 1, ["23:59"], "09:00")); // 09:00
