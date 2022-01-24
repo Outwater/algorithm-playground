@@ -25,5 +25,25 @@ function solution(A) {
   }
 
   return -1;
-  // write your code in JavaScript (Node.js 8.9.4)
+}
+
+// O(NlogN)으로 풀기
+function solution(A) {
+  // [1,1,1,6,6,6]
+  let memo = new Map();
+
+  for (let i = 0; i < A.length; i++) {
+    let currentValue = A[i];
+    if (memo.has(currentValue)) {
+      memo.set(currentValue, memo.get(currentValue) + 1);
+    } else {
+      memo.set(currentValue, 1);
+    }
+  }
+  for (const [key, value] of memo.entries()) {
+    if (value === 1) {
+      return key;
+    }
+  }
+  return -1;
 }
