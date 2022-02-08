@@ -17,7 +17,7 @@
 // 1) isPrime(numByTenth) : 십진수 숫자를 넣고, 소수인지 판별하는 함수
 //* 풀이방법(순서도, 절차적프로그래밍)
 // 1. 주어진 수를 k진수로 변환 (numByKth)
-// 2. 변환된 수 소수검사
+// 2. 변환된 수 소수검사 => 0이 포함되면 안되고, 0이 없을 경우 split(0)했을 때 그대로 담기므로 따로 검사필요x
 // 3. 변환된 수를 0으로 split하여 각각 소수검사
 //* 시간복잡도
 // O()
@@ -25,31 +25,22 @@
 //* 복습필요여부
 // No
 
-function solution(n, k) {
-  let primeNumberCnt = 0;
-  const numByKth = n.toString(k);
-  const candidates = numByKth.split("0");
+function isPrime(n) {
+  if (n <= 1) return false;
 
-  candidates.forEach((c) => {
-    if (isPrime(c)) {
-      primeNumberCnt += 1;
+  for (let i = 2; i <= Math.sqrt(n); i++) {
+    if (n % i === 0) {
+      return false;
     }
-  });
-
-  function isPrime(n) {
-    if (n <= 1) return false;
-
-    let isP = true;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-      if (n % i === 0) {
-        isP = false;
-        break;
-      }
-    }
-
-    return isP;
   }
-  return primeNumberCnt;
+
+  return true;
+}
+
+function solution(n, k) {
+  const candidates = n.toString(k).split("0");
+
+  return candidates.filter((c) => isPrime(c)).length;
 }
 
 console.log(solution(437674, 3)); // 3
