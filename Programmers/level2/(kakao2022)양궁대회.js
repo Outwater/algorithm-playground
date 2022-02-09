@@ -64,6 +64,10 @@
 //* 복습필요여부
 //
 
+//* 1차시도 fail
+// values를 기준으로 쏘기 시작할 경우 모든 케이스를 커버할 수 없다.
+// ex) 10점의 value가 가장 높을 때, 10점을 쏘지 않는 케이스에서도 최적의 상황이 나올 수 있다.
+
 function solution(n, info) {
   // 1. score_list 만들기
   const score_list = info.map((v, i) => {
@@ -83,6 +87,7 @@ function solution(n, info) {
     return b[2] - a[2];
   });
 
+  console.log(score_list);
   // 3. 최적의 경우일 때, 점수계산
   let total_score_appeach = 0;
   let total_score_lion = 0;
@@ -100,13 +105,13 @@ function solution(n, info) {
       total_score_appeach += target_score;
     }
   }
-  // console.log(total_score_appeach, total_score_lion);
+  console.log(total_score_appeach, total_score_lion);
   //4. 화살 남은 경우 0점으로 처리
   if (rest_cost) result[10] = rest_cost;
   return total_score_appeach - total_score_lion >= 0 ? [-1] : result;
 }
 
-console.log(solution(5, [2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0])); // [0,2,2,0,1,0,0,0,0,0,0]
-console.log(solution(1, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])); // [-1]
-console.log(solution(9, [0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1])); // [1,1,2,0,1,2,2,0,0,0,0]
-console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3])); //	[1,1,1,1,1,1,1,1,0,0,2]
+// console.log(solution(5, [2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0])); // [0,2,2,0,1,0,0,0,0,0,0]
+// console.log(solution(1, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])); // [-1]
+// console.log(solution(9, [0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1])); // [1,1,2,0,1,2,2,0,0,0,0]
+// console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3])); //	[1,1,1,1,1,1,1,1,0,0,2]
