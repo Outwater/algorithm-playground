@@ -1,3 +1,5 @@
+//* 정말 깔끔한 DFS [](https://eunchanee.tistory.com/628)
+
 //* 난이도 및 풀이 시간
 // start:
 // end:
@@ -14,58 +16,44 @@
 // O()
 
 //* 복습필요여부
-//
+// Yes
 
 function solution(info, edges) {
   let max = 0;
-  const visited = Array.from({ length: info.length }, () => false);
-  function go(prevIdx, currentIdx, sheep, wolf, visitedList) {
-    visitedList.push(currentIdx);
-    if (!visited[currentIdx]) {
-      visited[currentIdx] = true;
-      info[currentIdx] ? wolf++ : sheep++;
-    }
-    console.log(prevIdx, currentIdx, sheep, wolf, visited);
+  const length = info.length;
+  const graph = Array.from({ length }, () => []);
+  edges.forEach((node) => {
+    const [from, to] = node;
+    graph[from].push(to);
+  });
+
+  go([0, 0, 0], [0]);
+  function go(current, nextNodes) {
+    let [currentNode, sheep, wolf] = current;
+    const nextNewNodes = [...nextNodes]; // 방문할 수 있는 node들
+    const index = nextNewNodes.indexOf(currentNode); // 방문했던 노드 제거 위해
+
+    info[currentNode] ? wolf++ : sheep++;
+    max = Math.max(max, sheep);
 
     if (wolf >= sheep) {
-      max = Math.max(max, sheep);
-      visitedList.forEach((e) => (visited[e] = false));
-      console.log("die");
+      console.log(currentNode, "die");
       return;
     }
-    if (!info[currentIdx] && currentIdx !== 0) {
-      const target = edges.find((e) => e[1] === currentIdx);
-      if (!target) return;
-      const parentIdx = target && target[0];
-      go(currentIdx, parentIdx, sheep, wolf, visitedList);
+    // 현재 노드의 자식들을 방문할노드에 추가
+    if (graph[currentNode].length) {
+      nextNewNodes.push(...graph[currentNode]);
     }
-    const getUnVisitedNodes = (currentIdx) => {
-      return edges.filter((e) => e[0] === currentIdx);
-      // .filter((e) => !visited[e[1]]);
-    };
-    const unVisitedNodes = getUnVisitedNodes(currentIdx);
-    console.log("unNodes", unVisitedNodes);
 
-    unVisitedNodes.forEach((node) => {
-      let nextIdx = node[1];
-      if (info[nextIdx]) {
-        return go(currentIdx, nextIdx, sheep, wolf, visitedList);
-      } else {
-        return go(currentIdx, nextIdx, sheep, wolf, visitedList);
-      }
-    });
-
-    if (unVisitedNodes.length === 0) {
-      const target = edges.find((e) => e[1] === currentIdx);
-      if (!target) {
-        max = Math.max(max, sheep);
-        return;
-      }
-      const parentIdx = target && target[0];
-      return go(currentIdx, parentIdx, sheep, wolf, visitedList);
+    // 현재노드는 방문할 노드에서 제거
+    nextNewNodes.splice(index, 1);
+    // console.log([currentNode, sheep, wolf], nextNewNodes);
+    for (let i = 0; i < nextNewNodes.length; i++) {
+      go([nextNewNodes[i], sheep, wolf], nextNewNodes);
     }
   }
-  go(0, 0, 0, 0, []);
+
+  go([0, 0, 0], []);
   return max;
 }
 
@@ -87,20 +75,20 @@ console.log(
     ]
   )
 ); // 5
-// console.log(
-//   solution(
-//     [0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0],
-//     [
-//       [0, 1],
-//       [0, 2],
-//       [1, 3],
-//       [1, 4],
-//       [2, 5],
-//       [2, 6],
-//       [3, 7],
-//       [4, 8],
-//       [6, 9],
-//       [9, 10],
-//     ]
-//   )
-// ); //5
+console.log(
+  solution(
+    [0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0],
+    [
+      [0, 1],
+      [0, 2],
+      [1, 3],
+      [1, 4],
+      [2, 5],
+      [2, 6],
+      [3, 7],
+      [4, 8],
+      [6, 9],
+      [9, 10],
+    ]
+  )
+); //5
